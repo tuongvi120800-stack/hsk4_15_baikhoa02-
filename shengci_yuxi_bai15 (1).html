@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第15课 生词预习</title>
+<style>
+  :root{
+    --ink:#2c342f;
+    --paper:#f4f1e6;
+    --paper-2:#ffffff;
+    --pine:#33513f;
+    --pine-dark:#22362a;
+    --mustard:#d69a3e;
+    --coral:#c4644c;
+    --coral-dark:#7c3c2b;
+    --sage:#8fa98c;
+    --line:#d8d1bd;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Serif SC","Songti SC",serif;
+    line-height:1.7;
+    padding:0 0 60px;
+  }
+  header{
+    background:var(--pine-dark);
+    color:#f4f1e6;
+    padding:32px 24px 24px;
+    text-align:center;
+    border-bottom:6px solid var(--mustard);
+  }
+  header h1{font-size:22px;font-weight:500;margin:0 0 6px;letter-spacing:1px;}
+  header p{margin:0;font-size:13px;color:#c9d6ca;font-family:"Helvetica Neue",Arial,sans-serif;}
+  main{max-width:760px;margin:0 auto;padding:28px 20px;}
+  .panel-label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--coral-dark);margin-bottom:4px;
+  }
+  h2{font-size:19px;margin:0 0 6px;color:var(--pine-dark);}
+  .hint{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;color:#8a8672;margin-bottom:18px;
+  }
+  .card{
+    background:var(--paper-2);border:1px solid var(--line);
+    border-radius:6px;padding:18px 20px;margin-bottom:16px;
+  }
+  .check-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:8px 0;border-bottom:1px solid var(--line);
+  }
+  .check-row:last-child{border-bottom:none;}
+  .check-row .cword{font-size:16px;font-weight:700;min-width:70px;}
+  .check-row select.meaning{
+    flex:1;font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;
+    padding:6px 8px;border:1px solid var(--line);border-radius:4px;
+    background:var(--paper);color:var(--ink);
+  }
+  .check-row select.meaning.right{border-color:var(--pine);background:#e4ecdf;}
+  .check-row select.meaning.wrong{border-color:var(--coral);background:#f4e2dc;}
+  .vword-card{
+    background:var(--paper-2);border:1px solid var(--line);
+    border-left:4px solid var(--mustard);border-radius:6px;
+    padding:14px 16px;margin-bottom:14px;
+  }
+  .vword-card .vhead{display:flex;align-items:baseline;gap:10px;margin-bottom:2px;}
+  .vword-card .vword{font-size:20px;font-weight:700;color:var(--pine-dark);}
+  .vword-card .vpinyin{font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;color:var(--coral-dark);}
+  .vword-card .vmeaning{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:#5a5644;margin-bottom:4px;}
+  .vword-card .vex{font-size:13.5px;color:#6b675a;margin-bottom:10px;}
+  .subtask{border-top:1px dashed var(--line);padding-top:8px;margin-top:8px;}
+  .subtask .stitle{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:11px;
+    letter-spacing:1px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;
+  }
+  .subtask .stitle.tag-text{color:var(--pine);}
+  .subtask .stitle.tag-personal{color:var(--coral-dark);}
+  .subtask .sprompt{font-size:14px;margin-bottom:6px;}
+  .subtask textarea{
+    width:100%;font-family:inherit;font-size:14px;border:1px solid var(--line);
+    border-radius:4px;background:var(--paper);color:var(--ink);
+    padding:8px 10px;resize:vertical;min-height:38px;margin-bottom:6px;
+  }
+  .reveal-btn{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;
+    background:transparent;border:1px solid var(--sage);color:var(--pine-dark);
+    border-radius:4px;padding:4px 10px;cursor:pointer;
+  }
+  .reveal-answer{
+    display:none;font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;
+    color:var(--pine-dark);background:#e4ecdf;border-radius:4px;
+    padding:6px 10px;margin-top:6px;
+  }
+  .listen-card{
+    background:var(--paper-2);border:1px solid var(--line);
+    border-radius:6px;padding:18px 20px;margin-bottom:20px;
+  }
+  .listen-card h3{margin:0 0 10px;font-size:16px;color:var(--pine-dark);}
+  .listen-card audio{width:100%;margin-bottom:14px;}
+  .cloze-text{font-size:15.5px;line-height:2.1;}
+  .cloze-blank{
+    font-family:inherit;font-size:15px;text-align:center;
+    border:none;border-bottom:2px solid var(--mustard);
+    background:transparent;color:var(--pine-dark);
+    padding:0 2px;width:3em;
+  }
+  .cloze-blank.right{border-bottom-color:var(--pine);color:var(--pine-dark);}
+  .cloze-blank.wrong{border-bottom-color:var(--coral);color:var(--coral-dark);}
+  .listen-actions{margin-top:14px;display:flex;gap:8px;}
+  .listen-actions button{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;
+    background:var(--pine-dark);color:#f4f1e6;border:none;
+    border-radius:4px;padding:7px 14px;cursor:pointer;
+  }
+  .listen-actions button.secondary{
+    background:transparent;color:var(--pine-dark);border:1px solid var(--sage);
+  }
+  .listen-score{
+    font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;
+    color:var(--pine-dark);margin-left:4px;align-self:center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>第15课 · 教育孩子的艺术</h1>
+  <p>生词预习 — 先学熟这13个词，再进入课堂练习</p>
+</header>
+
+<main>
+  <div class="panel-label">预习</div>
+  <h2>生词 19–31</h2>
+  <div class="hint">每个词都有：课文原句 → 翻译练习 → 问答练习（问答练习都是家庭教育主题的开放问题，跟课文内容无关，因为课文留给学生回家翻译）</div>
+
+  <div id="vocabList"></div>
+
+  <div class="panel-label">自我检测（13/13 词）</div>
+  <div class="hint">选出正确的意思，答对变绿、答错变红，可重选</div>
+  <div class="panel-label">听力填空</div>
+  <h2>课文听写 — 听录音，填入正确的生词</h2>
+  <div class="hint">
+    音檔檔名請務必命名為 <code>15-4.mp3</code> 與 <code>15-5.mp3</code>（跟課本音軌編號一致），
+    放在跟這個 HTML 檔案同一個資料夾，才能正常播放。
+  </div>
+
+  <div class="listen-card" id="listen4">
+    <h3>課文 4（15-4）</h3>
+    <audio controls src="15-4.mp3">你的瀏覽器不支援音檔播放。</audio>
+    <div class="cloze-text">
+      有的孩子在得不到自己想要的东西的时候，会通过哭、扔东西或者
+      <input class="cloze-blank" data-answer="故意" size="2">
+      <input class="cloze-blank" data-answer="敲" size="1">
+      打来引起父母的注意。在这种情况下，建议父母先不要生气，应该停下手中的事情，陪孩子
+      <input class="cloze-blank" data-answer="整理" size="2">
+      整理东西，和他们聊聊天儿，弄清楚他们的问题。父母的关心，可以让孩子心情愉快起来。
+      教育孩子应该选择
+      <input class="cloze-blank" data-answer="合适" size="2">
+      的教育方法，最好不要为了解决问题而
+      <input class="cloze-blank" data-answer="骗" size="1">
+      孩子，这是因为
+      <input class="cloze-blank" data-answer="儿童" size="2">
+      缺少判断能力，看到父母骗人，他们也会学着说
+      <input class="cloze-blank" data-answer="假" size="1">
+      话。
+    </div>
+    <div class="listen-actions">
+      <button onclick="checkListen('listen4')">检查答案</button>
+      <button class="secondary" onclick="revealListen('listen4')">显示所有答案</button>
+      <span class="listen-score" id="score-listen4"></span>
+    </div>
+  </div>
+
+  <div class="listen-card" id="listen5">
+    <h3>課文 5（15-5）</h3>
+    <audio controls src="15-5.mp3">你的瀏覽器不支援音檔播放。</audio>
+    <div class="cloze-text">
+      七岁
+      <input class="cloze-blank" data-answer="左右" size="2">
+      的儿童普遍好动，坐不住，所以老师在教这个年龄段的孩子时，一定要想办法引起他们的兴趣。
+      只有让他们觉得你教的内容有趣，他们才会愿意努力学习。当孩子不明白时，应该多鼓励他，
+      不要用"
+      <input class="cloze-blank" data-answer="懒" size="1">
+      ""
+      <input class="cloze-blank" data-answer="笨" size="1">
+      ""
+      <input class="cloze-blank" data-answer="粗心" size="2">
+      "这种词批评他，这样对他们的正常发展不好。而且，对不同性格的孩子要使用不同的教育方法。
+      如果孩子比较
+      <input class="cloze-blank" data-answer="骄傲" size="2">
+      ，应该让他明白还有很多知识需要学习；要是孩子性格有些
+      <input class="cloze-blank" data-answer="害羞" size="2">
+      ，就要经常鼓励他说出自己的看法，这样才能让每一个孩子都健康地发展。
+    </div>
+    <div class="listen-actions">
+      <button onclick="checkListen('listen5')">检查答案</button>
+      <button class="secondary" onclick="revealListen('listen5')">显示所有答案</button>
+      <span class="listen-score" id="score-listen5"></span>
+    </div>
+  </div>
+</main>
+
+<script>
+const vocabData = [
+  {word:"故意",pinyin:"gùyì",meaning:"cố ý, cố tình",example:"他故意把玩具扔在地上。",
+   translatePrompt:"Em ấy cố ý làm vỡ cái cốc.",translateAnswer:"他故意把杯子打破了。",
+   question:"如果孩子故意打翻东西来引起你的注意，你会怎么做？请用「故意」回答。",
+   sampleAnswer:"我会先冷静下来，问问孩子发生了什么事，而不是马上骂他。"},
+  {word:"敲",pinyin:"qiāo",meaning:"gõ, đập",example:"故意敲打来引起父母的注意。",
+   translatePrompt:"Có người đang gõ cửa.",translateAnswer:"有人在敲门。",
+   question:"你觉得用体罚（比如打或敲）来教育孩子好吗？为什么？",
+   sampleAnswer:"我觉得体罚不是好方法，容易让孩子害怕，而不是真正明白问题。"},
+  {word:"整理",pinyin:"zhěnglǐ",meaning:"sắp xếp, dọn dẹp",example:"陪孩子整理整理东西。",
+   translatePrompt:"Tôi cần dọn dẹp phòng của mình.",translateAnswer:"我需要整理我的房间。",
+   question:"父母应不应该要求孩子自己整理房间？为什么？请用「整理」回答。",
+   sampleAnswer:"我觉得应该，这样可以让孩子从小学会负责任。"},
+  {word:"合适",pinyin:"héshì",meaning:"phù hợp, thích hợp",example:"应该选择合适的教育方法。",
+   translatePrompt:"Đôi giày này rất vừa với tôi.",translateAnswer:"这双鞋对我很合适。",
+   question:"你觉得什么样的教育方法比较合适现在的孩子？请用「合适」回答。",
+   sampleAnswer:"我觉得多沟通、多鼓励的方法比较合适现在的孩子。"},
+  {word:"骗",pinyin:"piàn",meaning:"lừa, lừa dối",example:"最好不要为了解决问题而骗孩子。",
+   translatePrompt:"Đừng lừa dối bạn bè của em.",translateAnswer:"不要骗你的朋友。",
+   question:"父母可不可以为了孩子好而骗孩子？请用「骗」回答。",
+   sampleAnswer:"我觉得不可以，因为孩子发现以后可能会不再信任父母。"},
+  {word:"儿童",pinyin:"értóng",meaning:"trẻ em",example:"儿童缺少判断能力。",
+   translatePrompt:"Công viên này rất phù hợp với trẻ em.",translateAnswer:"这个公园很适合儿童。",
+   question:"你觉得儿童教育最重要的是什么？请用「儿童」回答。",
+   sampleAnswer:"我觉得儿童教育最重要的是耐心和鼓励。"},
+  {word:"假",pinyin:"jiǎ",meaning:"giả, không thật",example:"他们也会学着说假话。",
+   translatePrompt:"Cái túi này là hàng giả.",translateAnswer:"这个包是假的。",
+   question:"父母对孩子说假话，可能会有什么影响？请用「假」回答。",
+   sampleAnswer:"父母说假话可能会让孩子也学着说假话，慢慢不再相信父母。"},
+  {word:"左右",pinyin:"zuǒyòu",meaning:"khoảng, chừng",example:"七岁左右的儿童普遍好动。",
+   translatePrompt:"Cô ấy khoảng ba mươi tuổi.",translateAnswer:"她三十岁左右。",
+   question:"你觉得几岁左右的孩子最需要父母的陪伴？请用「左右」回答。",
+   sampleAnswer:"我觉得三岁左右的孩子最需要父母的陪伴。"},
+  {word:"懒",pinyin:"lǎn",meaning:"lười",example:"不要用「懒」这种词批评他。",
+   translatePrompt:"Anh trai tôi rất lười.",translateAnswer:"我哥哥很懒。",
+   question:"如果孩子不想做作业，是因为懒还是别的原因？父母应该怎么办？",
+   sampleAnswer:"有时候不是懒，可能是不懂或者没有兴趣，父母应该先了解原因。"},
+  {word:"笨",pinyin:"bèn",meaning:"ngốc, dốt",example:"不要用「笨」这种词批评他。",
+   translatePrompt:"Đừng nói anh ấy ngốc.",translateAnswer:"别说他笨。",
+   question:"如果孩子学得比较慢，父母应该怎么鼓励他，而不是说他笨？",
+   sampleAnswer:"父母可以说「没关系，我们再练习一次」，而不是说他笨。"},
+  {word:"粗心",pinyin:"cūxīn",meaning:"bất cẩn, cẩu thả",example:"不要用「粗心」这种词批评他。",
+   translatePrompt:"Em ấy làm bài rất cẩu thả.",translateAnswer:"他做作业很粗心。",
+   question:"粗心的孩子，父母应该怎么帮助他改善？请用「粗心」回答。",
+   sampleAnswer:"父母可以提醒他做完以后检查一遍，而不是一直批评他粗心。"},
+  {word:"骄傲",pinyin:"jiāo'ào",meaning:"kiêu ngạo",example:"如果孩子比较骄傲，应该让他明白还有很多知识需要学习。",
+   translatePrompt:"Đừng kiêu ngạo như vậy.",translateAnswer:"别这么骄傲。",
+   question:"如果孩子因为成绩好而变得骄傲，父母应该怎么教育他？请用「骄傲」回答。",
+   sampleAnswer:"父母应该让他知道还有很多需要学习的地方，帮助他保持谦虚。"},
+  {word:"害羞",pinyin:"hàixiū",meaning:"xấu hổ, nhút nhát",example:"要经常鼓励他说出自己的看法。",
+   translatePrompt:"Em gái tôi rất nhút nhát, không dám nói ở nơi đông người.",translateAnswer:"我妹妹很害羞，不敢在人多的地方说话。",
+   question:"父母应该怎么帮助比较害羞的孩子？请用「害羞」回答。",
+   sampleAnswer:"父母可以多鼓励孩子说出自己的想法，慢慢帮助他建立信心。"}
+];
+
+const vocabListEl = document.getElementById('vocabList');
+vocabData.forEach((v,i)=>{
+  const card = document.createElement('div');
+  card.className = 'vword-card';
+  card.innerHTML = `
+    <div class="vhead"><span class="vword">${v.word}</span><span class="vpinyin">${v.pinyin}</span></div>
+    <div class="vmeaning">${v.meaning}</div>
+    <div class="vex">课文：${v.example}</div>
+    <div class="subtask">
+      <div class="stitle">翻译练习</div>
+      <div class="sprompt">${v.translatePrompt}</div>
+      <textarea rows="1" placeholder="用中文翻译，记得用上「${v.word}」"></textarea>
+      <button class="reveal-btn" data-target="ta${i}">查看参考答案</button>
+      <div class="reveal-answer" id="ta${i}">参考答案：${v.translateAnswer}</div>
+    </div>
+    <div class="subtask">
+      <div class="stitle">问答练习 · 家庭教育话题</div>
+      <div class="sprompt">${v.question}</div>
+      <textarea rows="2" placeholder="请用「${v.word}」回答这个问题"></textarea>
+      <button class="reveal-btn" data-target="qa${i}">查看参考答案</button>
+      <div class="reveal-answer" id="qa${i}">参考答案（仅供参考，答案不唯一）：${v.sampleAnswer}</div>
+    </div>
+  `;
+  vocabListEl.appendChild(card);
+});
+
+document.addEventListener('click',(e)=>{
+  if(e.target.classList.contains('reveal-btn')){
+    const target = document.getElementById(e.target.dataset.target);
+    target.style.display = target.style.display==='block' ? 'none' : 'block';
+  }
+});
+
+const selfCheckEl = document.getElementById('selfCheckList');
+vocabData.forEach((v,i)=>{
+  const d1 = vocabData[(i+4)%vocabData.length].meaning;
+  const d2 = vocabData[(i+8)%vocabData.length].meaning;
+  let opts = [v.meaning, d1, d2];
+  const rot = i%3;
+  opts = opts.slice(rot).concat(opts.slice(0,rot));
+  const row = document.createElement('div');
+  row.className = 'check-row';
+  const optionsHtml = opts.map(o=>`<option value="${o}">${o}</option>`).join('');
+  row.innerHTML = `
+    <span class="cword">${v.word}</span>
+    <select class="meaning" data-answer="${v.meaning}">
+      <option value="">（选意思）</option>
+      ${optionsHtml}
+    </select>
+  `;
+  selfCheckEl.appendChild(row);
+});
+
+document.querySelectorAll('select.meaning').forEach(sel=>{
+  sel.addEventListener('change',()=>{
+    sel.classList.remove('right','wrong');
+    if(!sel.value)return;
+    sel.classList.add(sel.value===sel.dataset.answer?'right':'wrong');
+  });
+});
+
+function checkListen(cardId){
+  const card = document.getElementById(cardId);
+  const inputs = card.querySelectorAll('.cloze-blank');
+  let correct = 0;
+  inputs.forEach(inp=>{
+    inp.classList.remove('right','wrong');
+    if(inp.value.trim() === inp.dataset.answer){
+      inp.classList.add('right');
+      correct++;
+    } else if(inp.value.trim() !== ''){
+      inp.classList.add('wrong');
+    }
+  });
+  document.getElementById('score-'+cardId).textContent = `${correct} / ${inputs.length} 正确`;
+}
+
+function revealListen(cardId){
+  const card = document.getElementById(cardId);
+  card.querySelectorAll('.cloze-blank').forEach(inp=>{
+    inp.value = inp.dataset.answer;
+    inp.classList.remove('wrong');
+    inp.classList.add('right');
+  });
+  document.getElementById('score-'+cardId).textContent = '已显示全部答案';
+}
+</script>
+
+</body>
+</html>
